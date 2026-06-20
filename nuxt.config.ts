@@ -11,11 +11,9 @@ export default defineNuxtConfig({
   typescript: {
     tsConfig: {
       include: [
-        "../components/**/*",
-        "../pages/**/*",
         "../composables/**/*",
-        "../layouts/**/*",
-        "../**/*" // This forces TS to scan the entire root directory relative to .nuxt
+        "../types/**/*",
+        "../utils/**/*"
       ]
     }
   }
