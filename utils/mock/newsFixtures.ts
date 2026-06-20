@@ -21,7 +21,7 @@ export const mockNewsFixtures: MockArticle[] = [
         title: 'AI regulation talks accelerate globally',
         link: '#',
         source: 'BBC',
-        publishedAt: Date.now() - 3_600_6000,
+        publishedAt: Date.now() - 3_600_000,
         tokens: ['ai', 'regulation', 'accelerate', 'global']
     },
     {
