@@ -22,10 +22,11 @@ export async function getNewsIntentProfile(db: IDBPDatabase<SomaticoDB>): Promis
   // scoped to news's OWN first event — not a global app-wide clock
   const firstSeen = Math.min(...events.map(e => e.timestamp))
   const ageDays = (Date.now() - firstSeen) / 86_400_000
-  const confidence = Math.min(1, ageDays / RAMP_DAYS) // smooth ramp, not a day-3 switch
+  const confidence = Math.max(0, Math.min(1, ageDays / RAMP_DAYS)) // smooth ramp, bounded [0,1]
 
   const totalDwell = events.reduce((sum, e) => sum + e.dwellTimeMs, 0)
-  const intentWeight = Math.min(1, totalDwell / HEAVY_DWELL_MS) * confidence // muted until confidence is earned
+  const dwellRatio = Math.max(0, Math.min(1, totalDwell / HEAVY_DWELL_MS))
+  const intentWeight = dwellRatio * confidence // muted until confidence is earned
 
   const keywords = await db.getAllFromIndex('keywords', 'by_source', 'news')
   const netWeightByWord = new Map<string, number>()
