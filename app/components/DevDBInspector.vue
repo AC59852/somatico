@@ -24,9 +24,15 @@ async function refresh() {
   const allSessions = await db.getAll('session_opens')
 
   // Show last 5 of each, most recent first
-  analytics.value = allAnalytics.slice(-5).reverse()
-  keywords.value = allKeywords.slice(-5).reverse()
-  sessions.value = allSessions.slice(-5).reverse()
+  analytics.value = [...allAnalytics]
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5)
+  keywords.value = [...allKeywords]
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5)
+  sessions.value = [...allSessions]
+    .sort((a, b) => b.timestamp - a.timestamp)
+    .slice(0, 5)
 
   await evaluate()
 }
